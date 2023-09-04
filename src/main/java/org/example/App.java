@@ -26,9 +26,7 @@ public class App {
             //int[] temp = {100, 10, 1, 10, 10, 10, 210, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
 
             switch (input) {
-                case "1" -> {
-                    priceStorage = set_prices();
-                }
+                case "1" -> priceStorage = set_prices();
                 case "2" -> {
                     int[] minPrice = min_price(priceStorage);
                     int[] maxPrice = max_price(priceStorage);
