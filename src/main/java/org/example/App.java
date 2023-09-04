@@ -1,5 +1,6 @@
 package org.example;
 
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class App {
@@ -7,6 +8,7 @@ public class App {
     public static void main(String[] args) {
         boolean exit = false;
         int[] priceStorage = new int[24];
+        String input = "";
         while (!exit) {
             String menu = """
                     Elpriser
@@ -19,7 +21,8 @@ public class App {
                     """;
             System.out.println(menu);
             Scanner scanner = new Scanner(System.in);
-            String input = scanner.next();
+            boolean inputNext = scanner.hasNext();
+            if (inputNext) input = scanner.next();
             //int[] temp = {100, 10, 1, 10, 10, 10, 210, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10};
 
             switch (input) {
@@ -54,13 +57,15 @@ public class App {
         System.out.println("Mata in värden: ");
         Scanner scanner = new Scanner(System.in);
         int[] prices = new int[24];
+
         try {
             for (int i = 0; i < prices.length; i++) {
                 System.out.println(i + ": ");
-                int inputPrice = scanner.nextInt();
-                prices[i] = inputPrice;
+                String inputPrice;
+                inputPrice = scanner.nextLine();
+                prices[i] = Integer.parseInt(inputPrice);
             }
-        } catch (Exception e) {
+        } catch (NoSuchElementException elementException) {
             System.out.println("Felaktigt tecken! ");
         }
         return prices;
@@ -91,9 +96,7 @@ public class App {
     }
     private static double avg_price(int[] prices) {
         int sum = 0;
-        for (int i = 0; i < prices.length; i++) {
-            sum = sum + prices[i];
-        }
+        for (int i = 0; i < prices.length; i++) sum += prices[i];
         return (double) sum / prices.length;
     }
 }
