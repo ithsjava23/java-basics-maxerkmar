@@ -59,9 +59,8 @@ public class App {
         try {
             for (int i = 0; i < prices.length; i++) {
                 System.out.println(i + ": ");
-                String inputPrice;
-                inputPrice = scanner.nextLine();
-                prices[i] = Integer.parseInt(inputPrice);
+                int inputPrice = scanner.nextInt();
+                prices[i] = inputPrice;
             }
         } catch (NoSuchElementException elementException) {
             System.out.println("Felaktigt tecken! ");
