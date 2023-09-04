@@ -13,7 +13,7 @@ public class App {
             String menu = """
                     Elpriser
                     ========
-                    1. Inmatning
+                    1. Inmatnin
                     2. Min, Max och Medel
                     3. Sortera
                     4. Bästa Laddningstid (4h)
