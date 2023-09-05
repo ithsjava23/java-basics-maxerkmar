@@ -4,7 +4,6 @@ package org.example;
 import java.util.Scanner;
 
 public class App {
-
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int[] priceStorage = new int[24];
@@ -32,7 +31,6 @@ public class App {
                     """;
         System.out.println(menu);
     }
-
     public static int[] getPrices(Scanner sc) {
         System.out.println("Mata in värden: ");
         int[] prices = new int[24];
@@ -43,7 +41,6 @@ public class App {
         }
         return prices;
     }
-
     private static int[] getMinPrice(int[] prices) {
         int[] minArray = new int[2];
         minArray[0] = prices[0];
@@ -55,7 +52,6 @@ public class App {
         }
         return minArray;
     }
-
     private static int[] getMaxPrice(int[] prices) {
         int[] maxArray = new int[2];
         maxArray[0] = prices[0];
@@ -67,7 +63,6 @@ public class App {
         }
         return maxArray;
     }
-
     private static double getAverage(int[] prices) {
         int sum = 0;
         for (int price : prices) {
