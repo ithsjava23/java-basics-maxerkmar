@@ -15,7 +15,7 @@ public class App {
             else if (input.equals("1")) priceStorage = getPrices(scanner);
             else if (input.equals("2")) getMinMaxMean(priceStorage);
             else if (input.equals("3")) getSorted(priceStorage);
-            else if (input.equals("4")) System.out.println("4");
+            else if (input.equals("4")) getBestTime(priceStorage);
             else System.out.println("Felaktig inmatning!");
             scanner.useDelimiter("\n");
         }
@@ -104,6 +104,23 @@ public class App {
             %02d-%02d %d öre
             %02d-%02d %d öre
             """, ogIndx[0],ogIndx[0]+1,sortedArray[l],ogIndx[1],ogIndx[1]+1,sortedArray[l-1],ogIndx[2],ogIndx[2]+1,sortedArray[l-2],ogIndx[3],ogIndx[3]+1,sortedArray[l-3]);
+        System.out.println(sorted);
+    }
+    private static void getBestTime(int[] prices) {
+        int[] sortedArray = Arrays.copyOf(prices, prices.length);
+        Arrays.sort(sortedArray);
+
+        int bestTime = 0;
+        for (int i = 0; i < prices.length; i++) {
+            if(prices[i] == sortedArray[0]){
+                bestTime = i;
+            }
+        }
+        double avgPrice = getAverage(Arrays.copyOf(sortedArray,4));
+        String sorted = String.format("""
+            Påbörja laddning klockan %02d
+            Medelpris 4h: %.1f öre/kWh
+            """, bestTime,avgPrice);
         System.out.println(sorted);
     }
 }
