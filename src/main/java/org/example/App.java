@@ -1,6 +1,7 @@
 package org.example;
 
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class App {
@@ -13,7 +14,7 @@ public class App {
             if (input.equals("e") || input.equals("E")) break;
             else if (input.equals("1")) priceStorage = getPrices(scanner);
             else if (input.equals("2")) getMinMaxMean(priceStorage);
-            else if (input.equals("3")) System.out.println("3");
+            else if (input.equals("3")) getSorted(priceStorage);
             else if (input.equals("4")) System.out.println("4");
             else System.out.println("Felaktig inmatning!");
             scanner.useDelimiter("\n");
@@ -80,5 +81,29 @@ public class App {
             Medelpris: %.2f öre/kWh
             """, minPrice[1], minPrice[1]+1, minPrice[0], maxPrice[1], maxPrice[1]+1, maxPrice[0], avgPrice);
         System.out.println(minMaxMean);
+    }
+    private static void getSorted(int[] prices) {
+        int[] sortedArray = Arrays.copyOf(prices, prices.length);
+        Arrays.sort(sortedArray);
+
+        //jämför index med orginal arrayen för att hitta rätt tid
+        int[] ogIndx = new int[4]; //index
+        int l = prices.length-1;
+        for (int i = 0; i < 4; i++) {
+            int maxIndex = sortedArray[l-i];
+            for (int j = 0; j < prices.length; j++) {
+                if (prices[j] == maxIndex) {
+                    ogIndx[i] = j;
+                    break;
+                }
+            }
+        }
+        String sorted = String.format("""
+            %02d-%02d %d öre
+            %02d-%02d %d öre
+            %02d-%02d %d öre
+            %02d-%02d %d öre
+            """, ogIndx[0],ogIndx[0]+1,sortedArray[l],ogIndx[1],ogIndx[1]+1,sortedArray[l-1],ogIndx[2],ogIndx[2]+1,sortedArray[l-2],ogIndx[3],ogIndx[3]+1,sortedArray[l-3]);
+        System.out.println(sorted);
     }
 }
