@@ -2,13 +2,10 @@ package org.example;
 
 
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
-        Locale swedishLocale = new Locale("sv", "SE");
-        Locale.setDefault(swedishLocale);
         Scanner scanner = new Scanner(System.in);
         int[] priceStorage = new int[24];
         while (true) {
@@ -83,7 +80,7 @@ public class App {
             Högsta pris: %02d-%02d, %d öre/kWh
             Medelpris: %.2f öre/kWh
             """, minPrice[1], minPrice[1]+1, minPrice[0], maxPrice[1], maxPrice[1]+1, maxPrice[0], avgPrice);
-        System.out.println(minMaxMean);
+        System.out.println(minMaxMean.replace('.',','));
     }
     private static void getSorted(int[] prices) {
         int[] sortedArray = Arrays.copyOf(prices, prices.length);
@@ -107,7 +104,7 @@ public class App {
             %02d-%02d %d öre
             %02d-%02d %d öre
             """, ogIndx[0],ogIndx[0]+1,sortedArray[l],ogIndx[1],ogIndx[1]+1,sortedArray[l-1],ogIndx[2],ogIndx[2]+1,sortedArray[l-2],ogIndx[3],ogIndx[3]+1,sortedArray[l-3]);
-        System.out.println(sorted);
+        System.out.println(sorted.replace('.',','));
     }
     private static void getBestTime(int[] prices) {
         int[] sortedArray = Arrays.copyOf(prices, prices.length);
@@ -124,6 +121,6 @@ public class App {
             Påbörja laddning klockan %02d
             Medelpris 4h: %.1f öre/kWh
             """, bestTime,avgPrice);
-        System.out.println(sorted);
+        System.out.println(sorted.replace('.',','));
     }
 }
