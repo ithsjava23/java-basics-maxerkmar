@@ -16,11 +16,10 @@ public class App {
             else if (input.equals("2")) getMinMaxMean(priceStorage);
             else if (input.equals("3")) getSorted(priceStorage);
             else if (input.equals("4")) getBestTime(priceStorage);
-            else System.out.println("Felaktig inmatning!");
-            scanner.useDelimiter("\n");
+            else if (input.equals("5")) getVisual(priceStorage);
         }
     }
-    private static void printMenu(){
+    public static void printMenu(){
         String menu = """
                     Elpriser
                     ========
@@ -33,16 +32,14 @@ public class App {
         System.out.println(menu);
     }
     public static int[] getPrices(Scanner sc) {
-        System.out.println("Mata in värden: ");
         int[] prices = new int[24];
         for (int i = 0; i < prices.length; i++) {
             String input = sc.nextLine();
-            sc.useDelimiter("\n");
             prices[i] = Integer.parseInt(input);
         }
         return prices;
     }
-    private static int[] getMinPrice(int[] prices) {
+    public static int[] getMinPrice(int[] prices) {
         int[] minArray = new int[2];
         minArray[0] = prices[0];
         for (int i = 0; i < prices.length; i++) {
@@ -53,7 +50,7 @@ public class App {
         }
         return minArray;
     }
-    private static int[] getMaxPrice(int[] prices) {
+    public static int[] getMaxPrice(int[] prices) {
         int[] maxArray = new int[2];
         maxArray[0] = prices[0];
         for (int i = 0; i < prices.length; i++) {
@@ -64,14 +61,14 @@ public class App {
         }
         return maxArray;
     }
-    private static double getAverage(int[] prices) {
+    public static double getAverage(int[] prices) {
         int sum = 0;
         for (int price : prices) {
             sum = sum + price;
         }
         return (double) sum / prices.length;
     }
-    private static void getMinMaxMean(int[] prices) {
+    public static void getMinMaxMean(int[] prices) {
         int[] minPrice = getMinPrice(prices);
         int[] maxPrice = getMaxPrice(prices);
         double avgPrice = getAverage(prices);
@@ -82,7 +79,7 @@ public class App {
             """, minPrice[1], minPrice[1]+1, minPrice[0], maxPrice[1], maxPrice[1]+1, maxPrice[0], avgPrice);
         System.out.println(minMaxMean.replace('.',','));
     }
-    private static void getSorted(int[] prices) {
+    public static void getSorted(int[] prices) {
         int[] sortedArray = Arrays.copyOf(prices, prices.length);
         Arrays.sort(sortedArray);
 
@@ -106,7 +103,7 @@ public class App {
             """, ogIndx[0],ogIndx[0]+1,sortedArray[l],ogIndx[1],ogIndx[1]+1,sortedArray[l-1],ogIndx[2],ogIndx[2]+1,sortedArray[l-2],ogIndx[3],ogIndx[3]+1,sortedArray[l-3]);
         System.out.println(sorted.replace('.',','));
     }
-    private static void getBestTime(int[] prices) {
+    public static void getBestTime(int[] prices) {
         int[] sortedArray = Arrays.copyOf(prices, prices.length);
         Arrays.sort(sortedArray);
 
@@ -122,5 +119,23 @@ public class App {
             Medelpris 4h: %.1f öre/kWh
             """, bestTime,avgPrice);
         System.out.println(sorted.replace('.',','));
+    }
+    public static void getVisual(int[] prices){
+        int[] minPrice = getMinPrice(prices);
+        int[] maxPrice = getMaxPrice(prices);
+        float diff = (maxPrice[0]-minPrice[0]) / 5f;
+        for (int i = 0; i < 6; i++) {
+            if (i == 0) System.out.printf("%3d|", maxPrice[0]);
+            else if (i == 5) System.out.printf("%3d|", minPrice[0]);
+            else System.out.printf("   |");
+            for (int j = 0; j < 24; j++) {
+                if (prices[j] >= maxPrice[0]) System.out.printf("  x");
+                else if (prices[j] >= maxPrice[0]-Math.ceil(diff*i)) System.out.printf("  x");
+                else System.out.printf("   ");
+            }
+            System.out.printf("\n");
+        }
+        System.out.printf("   |------------------------------------------------------------------------"+"\n");
+        System.out.printf("   | 00 01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23"+"\n");
     }
 }
