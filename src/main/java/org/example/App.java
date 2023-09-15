@@ -65,40 +65,39 @@ public class App {
         int[] minPrice = getMinPrice(prices);
         int[] maxPrice = getMaxPrice(prices);
         double avgPrice = getAverage(prices);
-        printMinMaxMean(minPrice,maxPrice,avgPrice);
+        printMinMaxMean(minPrice[1],minPrice[0],maxPrice[1],maxPrice[0],avgPrice);
     }
-    public static void printMinMaxMean(int[] min, int[] max, double avg){
+    public static void printMinMaxMean(int minTime,int minPrice,int maxTime,int maxPrice, double avgPrice){
         String minMaxMean = String.format("""
             Lägsta pris: %02d-%02d, %d öre/kWh
             Högsta pris: %02d-%02d, %d öre/kWh
             Medelpris: %.2f öre/kWh
-            """, min[1], min[1]+1, min[0], max[1], max[1]+1, max[0], avg);
+            """, minTime, minTime+1, minPrice, maxTime, maxTime+1, maxPrice, avgPrice);
         System.out.println(minMaxMean.replace('.',','));
     }
     public static void getSorted(int[] prices) {
         int[] sortedArray = Arrays.copyOf(prices, prices.length);
         Arrays.sort(sortedArray);
         //jämför index med orginal arrayen för att hitta rätt tid
-        int[] ogIndx = new int[4]; //index
-        int l = prices.length-1;
-        for (int i = 0; i < 4; i++) {
-            int maxIndex = sortedArray[l-i];
+        int[] originalIndex = new int[4]; //index
+        for (int i = 0; i < originalIndex.length; i++) {
+            int maxIndex = sortedArray[sortedArray.length-1-i];
             for (int j = 0; j < prices.length; j++)
                 if (prices[j] == maxIndex) {
-                    ogIndx[i] = j;
+                    originalIndex[i] = j;
                     break;
                 }
         }
-        printSorted(ogIndx,sortedArray,l);
+        printSorted(originalIndex,sortedArray);
     }
-    public static void printSorted(int[] time,int[] sortedArr,int lenght){
+    public static void printSorted(int[] time,int[] price){
         String sorted = String.format("""
             %02d-%02d %d öre
             %02d-%02d %d öre
             %02d-%02d %d öre
             %02d-%02d %d öre
-            """, time[0],time[0]+1,sortedArr[lenght],time[1],time[1]+1,sortedArr[lenght-1],
-                 time[2],time[2]+1,sortedArr[lenght-2],time[3],time[3]+1,sortedArr[lenght-3]);
+            """, time[0],time[0]+1,price[price.length-1],time[1],time[1]+1,price[price.length-2],
+                 time[2],time[2]+1,price[price.length-3],time[3],time[3]+1,price[price.length-4]);
         System.out.println(sorted.replace('.',','));
     }
     public static void getBestTime(int[] prices) {
@@ -109,24 +108,28 @@ public class App {
             if (prices[i] == sortedArray[0]) bestTime = i;
         printBestTime(bestTime,getAverage(Arrays.copyOf(sortedArray,4)));
     }
-    public static void printBestTime(int bestTime, double avg){
+    public static void printBestTime(int bestTime, double avgPrice){
         String sorted = String.format("""
             Påbörja laddning klockan %02d
             Medelpris 4h: %.1f öre/kWh
-            """, bestTime,avg);
+            """, bestTime,avgPrice);
         System.out.println(sorted.replace('.',','));
     }
     public static void getVisual(int[] prices){
-        int[] minPrice = getMinPrice(prices);
-        int[] maxPrice = getMaxPrice(prices);
+        int[] priceArr = Arrays.copyOf(prices,prices.length);
+        int[] minPrice = getMinPrice(priceArr);
+        int[] maxPrice = getMaxPrice(priceArr);
         float diff = (maxPrice[0]-minPrice[0]) / 5f;
-        for (int i = 0; i < 6; i++) {
-            if (i == 0) System.out.printf("%3d|", maxPrice[0]);
-            else if (i == 5) System.out.printf("%3d|", minPrice[0]);
+        printVisual(6,24,priceArr,minPrice[0],maxPrice[0],diff);
+    }
+    public static void printVisual(int rows, int columns, int[] prices, int minPrice, int maxPrice, float stapleDiff){
+        for (int i = 0; i < rows; i++) {
+            if (i == 0) System.out.printf("%3d|", maxPrice);
+            else if (i == 5) System.out.printf("%3d|", minPrice);
             else System.out.printf("   |");
-            for (int j = 0; j < 24; j++)
-                if (prices[j] >= maxPrice[0]) System.out.printf("  x");
-                else if (prices[j] >= maxPrice[0] - Math.ceil(diff * i)) System.out.printf("  x");
+            for (int j = 0; j < columns; j++)
+                if (prices[j] >= maxPrice) System.out.printf("  x");
+                else if (prices[j] >= maxPrice - Math.ceil(stapleDiff * i)) System.out.printf("  x");
                 else System.out.printf("   ");
             System.out.printf("\n");
         }
